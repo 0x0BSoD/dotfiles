@@ -8,7 +8,7 @@ secondary = ${xrdb:color5}
 alert = #bd2c40
 col = #00f
 
-[bar/example]
+[bar/main]
 monitor = ${env:MONITOR:LVDS-1}
 width = 100%
 height = 24
@@ -35,24 +35,12 @@ font-2 = Wuncon Siji:pixelsize=9;1
 
 modules-left = i3
 modules-center = date
-modules-right =  eth cpu temperature pulseaudio
+modules-right = eth cpu memory temperature xkeyboard pulseaudio
 
 tray-position = right
-tray-padding = 2
-tray-detached = false
-tray-maxsize = 16
-tray-background = ${colors.background-alt}
-tray-offset-x = 0
-tray-offset-y = 0
-;tray-padding = 0
-tray-scale = 1.0
 
 scroll-up = i3wm-wsnext
 scroll-down = i3wm-wsprev
-
-[module/xwindow]
-type = internal/xwindow
-label = %title:0:30:...%
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -70,25 +58,6 @@ label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
 label-indicator-underline = ${colors.secondary}
 
-[module/filesystem]
-type = internal/fs
-interval = 25
-
-mount-0 = /
-
-label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
-label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.foreground-alt}
-
-[module/home]
-type = internal/fs
-interval = 25
-
-mount-0 = /home
-
-label-mounted = %{F#0a81f5}~%{F-}: %percentage_used%%
-label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.foreground-alt}
 [module/bspwm]
 type = internal/bspwm
 
@@ -115,7 +84,7 @@ index-sort = true
 wrapping-scroll = false
 
 ; Only show workspaces on the same output as the bar
-;pin-workspaces = true
+pin-workspaces = true
 
 label-mode-padding = 2
 label-mode-foreground = #000
@@ -143,51 +112,6 @@ label-urgent = %index%
 label-urgent-background = ${module/bspwm.label-urgent-background}
 label-urgent-padding = ${module/bspwm.label-urgent-padding}
 
-[module/mpd]
-type = internal/mpd
-format-online = <label-song> <label-time>
-#<icon-prev> <toggle> <icon-next>
-#<toggle>
-
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
-#icon-prev = <-
-#icon-stop = X
-#icon-play-prefix = #f00
-#icon-play = (Paused)
-#icon-pause =
-#icon-next = ->
-
-;bar-progress-width = 45
-;bar-progress-indicator = |
-;bar-progress-fill = -
-;bar-progress-empty = -
-
-label-song =  %artist% - %title%
-label-song-maxlen = 70
-label-song-ellipsis = true
-
-[module/xbacklight]
-type = internal/xbacklight
-
-format = <label> <bar>
-label = BL
-
-bar-width = 10
-bar-indicator = |
-bar-indicator-foreground = #ff
-bar-indicator-font = 2
-bar-fill = ─
-bar-fill-font = 2
-bar-fill-foreground = #9f78e1
-bar-empty = ─
-bar-empty-font = 2
-bar-empty-foreground = ${colors.foreground-alt}
-
-
 [module/cpu]
 type = internal/cpu
 interval = 2
@@ -203,27 +127,6 @@ format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
 format-underline = ${xrdb:color6}
 label = %percentage_used%%
-
-[module/wlan]
-type = internal/network
-interface = enp7s0
-interval = 3.0
-
-format-connected = <ramp-signal> <label-connected>
-format-connected-underline = ${xrdb:color5}
-label-connected = %essid%
-
-format-disconnected = <label-disconnected>
-format-disconnected-underline = ${self.format-connected-underline}
-label-disconnected = no wifi
-label-disconnected-foreground = ${colors.foreground-alt}
-
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
 type = internal/network
@@ -294,41 +197,14 @@ format-underline = ${xrdb:color1}
 format-warn = <ramp> <label-warn>
 format-warn-underline = ${self.format-underline}
 
-label = %temperature%
-label-warn = %temperature%
+label = %temperature-c%
+label-warn = %temperature-c%
 label-warn-foreground = ${colors.secondary}
 
 ramp-0 = 
 ramp-1 = 
 ramp-2 = 
 ramp-foreground = ${colors.foreground-alt}
-
-[module/powermenu]
-type = custom/menu
-
-format-spacing = 1
-
-label-open = 
-label-open-foreground = ${colors.secondary}
-label-close =  cancel
-label-close-foreground = ${colors.secondary}
-label-separator = |
-label-separator-foreground = ${colors.foreground-alt}
-
-menu-0-0 = reboot
-menu-0-0-exec = menu-open-1
-menu-0-1 = power off
-menu-0-1-exec = menu-open-2
-
-menu-1-0 = cancel
-menu-1-0-exec = menu-open-0
-menu-1-1 = reboot
-menu-1-1-exec = sudo reboot
-
-menu-2-0 = power off
-menu-2-0-exec = sudo poweroff
-menu-2-1 = cancel
-menu-2-1-exec = menu-open-0
 
 [settings]
 screenchange-reload = true
