@@ -17,18 +17,15 @@
 
 " Vim Encanse
     Plugin 'w0rp/ale'
-    Bundle 'Valloric/YouCompleteMe'
-    Plugin 'ervandew/supertab'
     Plugin 'Raimondi/delimitMate'
-    Plugin 'Yggdroot/indentLine'
-    Plugin 'airblade/vim-gitgutter'
-    Plugin 'junegunn/fzf'
+    Plugin 'Valloric/YouCompleteMe'
 
 " Generic Support
     Plugin 'xolox/vim-misc'
     Plugin 'xolox/vim-easytags'
 
 " Git Support
+    Plugin 'airblade/vim-gitgutter'
     Plugin 'kablamo/vim-git-log'
     Plugin 'gregsexton/gitv'
     Plugin 'tpope/vim-fugitive'
@@ -36,7 +33,6 @@
 " Syntax
     Plugin 'pangloss/vim-javascript'
     Plugin 'posva/vim-vue'
-    Plugin 'dNitro/vim-pug-complete'
     Plugin 'PotatoesMaster/i3-vim-syntax'
 
 " Interface
@@ -59,9 +55,12 @@ call vundle#end()            " required
     set smarttab
     set expandtab
     set nowrap
-    " let g:deoplete#enable_at_startup = 1
-    autocmd BufWritePre * %s/\s\+$//e
-    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+    set wildmenu   
+    set path=**
+    set incsearch 
+    set magic
+    set showmatch 
+    
 
 " Style
     syntax on
@@ -84,14 +83,19 @@ call vundle#end()            " required
     let g:ycm_seed_identifiers_with_syntax = 1
     let g:ycm_complete_in_comments = 1
     let g:ycm_complete_in_strings = 1
-    let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
-    let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+    let g:ycm_python_binary_path = 'python'
+    let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
 
 " Ale tune
-    let g:ale_sign_error = '☠'
-    let g:ale_sign_warning = '⚠'
+    let g:ale_sign_error = '✘'
+    let g:ale_sign_warning = '▲'
     let g:airline#extensions#ale#enabled = 1
     let g:ycm_python_binary_path = 'python'
+	let g:ale_linters = {
+	\   'javascript': ['jshint'],
+	\   'python': ['flake8']
+	\}
+
 
 " Easy tags tune
     set tags=./tags;,~/.vimtags
@@ -120,14 +124,47 @@ call vundle#end()            " required
     set splitbelow
     set splitright
 
-" Guide lines tune
+" Functions
+	fun! CleanExtraSpaces()
+    	let save_cursor = getpos(".")
+    	let old_query = getreg('/')
+    	silent! %s/\s\+$//e
+    	call setpos('.', save_cursor)
+    	call setreg('/', old_query)
+	endfun
+
+	function! VisualSelection(direction, extra_filter) range
+	    let l:saved_reg = @"
+	    execute "normal! vgvy"
+	
+	    let l:pattern = escape(@", "\\/.*'$^~[]")
+	    let l:pattern = substitute(l:pattern, "\n$", "", "")
+	
+	    if a:direction == 'gv'
+	        call CmdLine("Ack '" . l:pattern . "' " )
+	    elseif a:direction == 'replace'
+	        call CmdLine("%s" . '/'. l:pattern . '/')
+	    endif
+	
+	    let @/ = l:pattern
+	    let @" = l:saved_reg
+	endfunction
+
+	if has("autocmd")
+    	autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()	
+	endif
 
 """""""""""""""""""""""""
 " Mappings configurationn
 """""""""""""""""""""""""
 
-" fzf remap
-    nmap <C-p> :FZF<cr>
+	nmap <silent> <leader>a <Plug>(ale_next_wrap)
+
+
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+    vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+    vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 " Paste mode
     set pastetoggle=<F3>
@@ -135,24 +172,14 @@ call vundle#end()            " required
 " C-T for new tab
     nnoremap <C-t> :tabnew<cr>
 
-" Split Pane
-    nnoremap <C-q> :split<cr>
-    nnoremap <C-w> :vsplit<cr>
-
+" Move a line of text using ALT+[jk]
+    nmap <M-j> mz:m+<cr>`z
+    nmap <M-k> mz:m-2<cr>`z
+    vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+    vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+    
 " Shortcutting split navigation, saving a keypress:
     map <C-h> <C-w>h
     map <C-j> <C-w>j
     map <C-k> <C-w>k
     map <C-l> <C-w>l
-
-" Split size
-    nmap <Left> :vertical resize +5<cr>
-    nmap <Right> :vertical resize -5<cr>
-    nmap <Up> :resize +5<cr>
-    nmap <Down> :resize -5<cr>
-
-
-" Open the selected text in a split (i.e. should be a file).
-    map <leader>o "oyaW:sp <C-R>o<CR>
-    xnoremap <leader>o "oy<esc>:sp <C-R>o<CR>
-    vnoremap <leader>o "oy<esc>:sp <C-R>o<CR>
