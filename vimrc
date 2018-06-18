@@ -164,7 +164,6 @@ call vundle#end()            " required
     nnoremap ,<space> :nohlsearch<CR>
 	nmap <silent> <leader>a <Plug>(ale_next_wrap)
 
-
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
     vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
