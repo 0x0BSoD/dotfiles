@@ -11,8 +11,10 @@ ZSH_THEME="agnoster"
 
 plugins=(
   git
-  zsh-autosuggestions
   zsh-syntax-highlighting
+  archlinux
+  vi-mode
+  web-search
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -27,6 +29,10 @@ LOGCHECK=10
 REPORTTIME=5
 COMPLETION_WAITING_DOTS="true"
 zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+
+if command -v tmux>/dev/null; then
+    [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && exec tmux
+fi
 
 # ----------------------------------------------------------------------------
 # Aliases

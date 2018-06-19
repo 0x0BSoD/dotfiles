@@ -40,7 +40,7 @@
 " Interface
     Plugin 'itchyny/lightline.vim'
     Plugin 'Yggdroot/indentLine'
-    Plugin 'altercation/vim-colors-solarized'
+    Plugin 'dracula/vim'
 
 call vundle#end()            " required
 """ END Vundle Configuration
@@ -78,7 +78,7 @@ call vundle#end()            " required
     set laststatus=2
     set t_Co=256
     set background=dark
-    colorscheme solarized
+    colorscheme dracula
 
 " YCM
     let g:ycm_collect_identifiers_from_tags_files = 1
