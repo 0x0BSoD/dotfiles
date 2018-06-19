@@ -4,6 +4,7 @@ export EDITOR="vim"
 export TERMINAL="st"
 export BROWSER="chromium"
 export BLOCKSIZE=Mb
+export KEYTIMEOUT=1
 
 export ZSH=$HOME/.oh-my-zsh
 
@@ -33,6 +34,30 @@ zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f
 if command -v tmux>/dev/null; then
     [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && exec tmux
 fi
+
+# VI-mode tune
+bindkey -M vicmd '?' history-incremental-search-backward
+bindkey -M vicmd '/' history-incremental-search-forward
+
+bindkey "^[OA" up-line-or-beginning-search
+bindkey "^[OB" down-line-or-beginning-search
+bindkey -M vicmd "k" up-line-or-beginning-search
+bindkey -M vicmd "j" down-line-or-beginning-search
+
+function zle-keymap-select() {
+  zle reset-prompt
+  zle -R
+}
+
+zle -N zle-keymap-select
+
+function vi_mode_prompt_info() {
+  echo "${${KEYMAP/vicmd/[% NORMAL]%}/(main|viins)/[% INSERT]%}"
+}
+
+# define right prompt, regardless of whether the theme defined it
+RPS1='$(vi_mode_prompt_info)'
+RPS2=$RPS1
 
 # ----------------------------------------------------------------------------
 # Aliases
