@@ -8,15 +8,25 @@ export KEYTIMEOUT=1
 
 export ZSH=$HOME/.oh-my-zsh
 
-ZSH_THEME="agnoster"
-
-plugins=(
-  git
-  zsh-syntax-highlighting
-  archlinux
-  vi-mode
-  web-search
-)
+if [ uname != "Darwin" ]; then
+    plugins=(
+      git
+      zsh-syntax-highlighting
+      archlinux
+      vi-mode
+      web-search
+    )
+ else
+     plugins=(
+      git
+      zsh-syntax-highlighting
+      vi-mode
+      npm
+      brew
+      nyan
+      web-search
+    )
+fi
 
 source $ZSH/oh-my-zsh.sh
 
@@ -43,18 +53,7 @@ bindkey "^[OA" up-line-or-beginning-search
 bindkey "^[OB" down-line-or-beginning-search
 bindkey -M vicmd "k" up-line-or-beginning-search
 bindkey -M vicmd "j" down-line-or-beginning-search
-
-function zle-keymap-select() {
-  zle reset-prompt
-  zle -R
-}
-
 zle -N zle-keymap-select
-
-function vi_mode_prompt_info() {
-  echo "${${KEYMAP/vicmd/[% NORMAL]%}/(main|viins)/[% INSERT]%}"
-}
-
 # define right prompt, regardless of whether the theme defined it
 RPS1='$(vi_mode_prompt_info)'
 RPS2=$RPS1
@@ -77,9 +76,44 @@ alias rm='nocorrect rm -I'
 
 alias rehash="hash -r"
 
-alias ga='git add'
-alias gs='git status'
-alias gc='git commit -m'
+alias ga='git add -A'
 alias gp='git push'
-alias gg='git pull'
-alias gb='git checkout'
+alias gl='git log'
+alias gs='git status'
+alias gd='git diff'
+alias gm='git commit -m'
+alias gma='git commit -am'
+alias gb='git branch'
+alias gc='git checkout'
+alias gra='git remote add'
+alias grr='git remote rm'
+alias gpu='git pull'
+alias gcl='git clone'
+alias gta='git tag -a -m'
+alias gf='git reflog'
+
+# ----------------------------------------------------------------------------
+# Functions
+# ----------------------------------------------------------------------------
+
+# Change directory to the current Finder directory
+if [ uname = "Darwin" ]; then
+    cdf() {
+        target=`osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'`
+        if [ "$target" != "" ]; then
+          cd "$target"; pwd
+        else
+          echo 'No Finder window found' >&2
+        fi
+    }
+fi
+
+function vi_mode_prompt_info() {
+  echo "${${KEYMAP/vicmd/[% NORMAL]%}/(main|viins)/[% INSERT]%}"
+}
+
+function zle-keymap-select() {
+  zle reset-prompt
+  zle -R
+}
+
