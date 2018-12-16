@@ -4,6 +4,7 @@
 
 + i3 (i3-gaps)
 + vim
++ dunst
 + zsh
 + ranger
 + scrot

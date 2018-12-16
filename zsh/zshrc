@@ -1,0 +1,88 @@
+#    ___  _  _  ____  ___  _____  ____
+#   / _ \( \/ )(  _ \/ __)(  _  )(  _ \
+#  ( (_) ))  (  ) _ <\__ \ )(_)(  )(_) )
+#   \___/(_/\_)(____/(___/(_____)(____/
+#
+
+#################
+# golang env vars
+#################
+export GOPATH=$HOME/go
+export GOROOT=/usr/local/go
+export PATH=$PATH:$GOROOT/bin
+
+############
+# oh-my-zsh
+############
+export ZSH=$HOME/.oh-my-zsh
+export ZSHCUSTOM=$HOME/.oh-my-zsh/custom
+. $ZSHCUSTOM/settings/config
+COMPLETION_WAITING_DOTS="true"
+plugins=(
+  git
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  )
+source $ZSH/oh-my-zsh.sh
+source $ZSHCUSTOM/scripts/iterm2.zsh
+
+
+if [ -f "$ZSH/custom/settings/intro" ]; then
+  echo "${txtylw}"
+  cat $ZSHCUSTOM/settings/intro
+  echo "${txtrst}"
+fi
+
+##########################################
+# ALIASES
+##########################################
+unamestr=$(uname)
+alias zshconfig="$EDITOR ~/.zshrc"
+alias ohmyzsh="$EDITOR $ZSH"
+alias grep='nocorrect grep --color=auto --exclude="*.pyc" --exclude-dir=".svn" --exclude-dir=".hg" --exclude-dir=".bzr" --exclude-dir=".git"';
+if [[ $unamestr == "Darwin" ]]; then
+   alias ls='ls -FGh'
+   alias ll='ls -FGhl'
+   alias la='ls -FGhlA'
+   alias li='ls -FGhial'
+   alias lsa='ls -FGhld .*'
+else
+   alias ls='ls -Fh --color=auto'
+   alias ll='ls -Fhl --color=auto'
+   alias la='ls -FhlA --color=auto'
+   alias li='ls -Fhial --color=auto'
+   alias lsa='ls -Fhld --color=auto .*'
+fi
+
+alias cp='nocorrect cp -i'
+alias mv='nocorrect mv -i'
+alias rm='nocorrect rm -i'
+
+alias rehash="hash -r"
+
+alias ga='git add -A'
+alias gp='git push'
+alias gl='git log'
+alias gs='git status'
+alias gd='git diff'
+alias gm='git commit -m'
+alias gma='git commit -am'
+alias gb='git branch'
+alias gc='git checkout'
+alias gra='git remote add'
+alias grr='git remote rm'
+alias gpu='git pull'
+alias gcl='git clone'
+alias gta='git tag -a -m'
+alias gf='git reflog'
+
+alias cdf='cd `osascript -e "tell application \"Finder\" to if window 1 exists then if target of window 1 as string is not \":\" then get POSIX path of (target of window 1 as alias)"`'
+
+
+autoload -U compinit && compinit
+
+eval $(thefuck --alias)
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# vim: filetype=zshrc

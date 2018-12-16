@@ -1,7 +1,7 @@
-"  ___  _  _  ____  ___  _____  ____
-" / _ \( \/ )(  _ \/ __)(  _  )(  _ \
-"( (_) ))  (  ) _ <\__ \ )(_)(  )(_) )
-" \___/(_/\_)(____/(___/(_____)(____/
+"   ___  _  _  ____  ___  _____  ____
+"  / _ \( \/ )(  _ \/ __)(  _  )(  _ \
+" ( (_) ))  (  ) _ <\__ \ )(_)(  )(_) )
+"  \___/(_/\_)(____/(___/(_____)(____/
 
 """ START Vundle Configuration
 
@@ -17,8 +17,8 @@
 
 " Vim Encanse
     Plugin 'w0rp/ale'
-    Plugin 'Raimondi/delimitMate'
-    Plugin 'Valloric/YouCompleteMe'
+    "Plugin 'Raimondi/delimitMate'
+    " Plugin 'Valloric/YouCompleteMe'
 
 " Generic Support
     Plugin 'xolox/vim-misc'
@@ -40,7 +40,7 @@
 " Interface
     Plugin 'itchyny/lightline.vim'
     Plugin 'Yggdroot/indentLine'
-    Plugin 'dracula/vim'
+    "Plugin 'dracula/vim'
 
 call vundle#end()            " required
 """ END Vundle Configuration
@@ -78,16 +78,16 @@ call vundle#end()            " required
     set laststatus=2
     set t_Co=256
     set background=dark
-    colorscheme dracula
+    "colorscheme dracula
 
 " YCM
-    let g:ycm_collect_identifiers_from_tags_files = 1
-    let g:ycm_use_ultisnips_completer = 1
-    let g:ycm_seed_identifiers_with_syntax = 1
-    let g:ycm_complete_in_comments = 1
-    let g:ycm_complete_in_strings = 1
-    let g:ycm_python_binary_path = 'python'
-    let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+"    let g:ycm_collect_identifiers_from_tags_files = 1
+"    let g:ycm_use_ultisnips_completer = 1
+"    let g:ycm_seed_identifiers_with_syntax = 1
+"    let g:ycm_complete_in_comments = 1
+"    let g:ycm_complete_in_strings = 1
+"    let g:ycm_python_binary_path = 'python'
+"    let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
 
 " Ale tune
     let g:ale_sign_error = '✘'
@@ -186,3 +186,4 @@ call vundle#end()            " required
     map <C-j> <C-w>j
     map <C-k> <C-w>k
     map <C-l> <C-w>l
+
