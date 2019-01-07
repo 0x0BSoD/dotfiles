@@ -38,7 +38,7 @@ function make_links() {
         rc=$?
         if [[ ${rc} -eq 0 ]]; then
             echo "${c} === Installed"
-            CFG_PATH="$HOME/config/${conf_d[$c]}"
+            CFG_PATH="$HOME/${conf_d[$c]}"
             if [[ -d ${CFG_PATH} ]]; then
                 echo "${CFG_PATH} -- Dir removed!"
                 rm -Rf ${CFG_PATH}
@@ -76,24 +76,28 @@ echo "Package manager #########################"
     fi
  done
 
+if $1 != "silent"
+then
+    which dialog > /dev/null
+    rc=$?
+    if [[ ${rc} -eq 1 ]]; then
+        echo "Bash dialog === Not Installed"
+        command="${PM} dialog"
+        echo "[x] run: ${command}"
+        ${command}
+    fi
 
-which dialog > /dev/null
-rc=$?
-if [[ ${rc} -eq 1 ]]; then
-    echo "Bash dialog === Not Installed"
-    command="${PM} dialog"
-    echo "[x] run: ${command}"
-    ${command}
+
+    dialog --title "Config pusher" --yesno "Your existing configs has be delited. Do you wish to begin?" 7 60
+    response=$?
+    clear
+    case ${response} in
+        0) make_links ;;
+        1) exit ;;
+    esac
+else
+   make_links
 fi
-
-
-dialog --title "Config pusher" --yesno "Your existing configs has be delited. Do you wish to begin?" 7 60
-response=$?
-clear
-case ${response} in
-    0) make_links ;;
-    1) exit ;;
-esac
 
 #start_this
 #ln -s ./zshrc     ~/.zshrc
