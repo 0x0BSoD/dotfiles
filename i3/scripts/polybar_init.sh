@@ -8,6 +8,6 @@ for i in $(polybar -m | awk -F: '{print $1}'); do
     MONITOR=${i} polybar main -c ~/.config/i3/polybar/config &
 done
 
-feh --bg-scale ~/.config/wall.png
+feh --bg-scale ~/.config/wall.jpg
 
 echo "Bars launched..."
