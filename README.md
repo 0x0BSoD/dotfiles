@@ -8,6 +8,6 @@
 + zsh
 + ranger
 + scrot
-+ polybar
++ polybar or i3blocks
 + compton
 + feh
