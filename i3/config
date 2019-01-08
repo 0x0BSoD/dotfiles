@@ -7,7 +7,7 @@
 for_window [class="^.*"] border pixel 3
 gaps inner 15
 gaps outer 15
-font pango:mono 12
+font pango:Source Sans Pro 10
 set $mod Mod4
 set $term --no-startup-id st
 
@@ -16,18 +16,65 @@ set $term --no-startup-id st
 exec --no-startup-id dunst
 #Composite manager:
 exec --no-startup-id compton --xrender-sync-fence
-#Launch Polybar where appropriate:
-exec_always --no-startup-id ~/.config/i3/scripts/polybar_init.sh
 #Runs the key remapping scripts
-exec --no-startup-id  ~/.config/i3/scripts/remaps
+exec --no-startup-id  ~/.scripts/remaps
 #Unclutter makes the mouse invisible after a brief period
 exec --no-startup-id unclutter
+#set wallpaper
+exec --no-startup-id  ~/.scripts/setbgw
 
 #SYSTEMD
 set $shutdown sudo shutdown -h now
 set $reboot sudo reboot
 set $netrefresh --no-startup-id sudo systemctl restart NetworkManager
 set $hibernate sudo systemctl suspend
+
+
+# Set Xresources colors:
+set_from_resource $darkblack	color0  #000000
+set_from_resource $black	    color8  #000000
+set_from_resource $darkred	    color1  #000000
+set_from_resource $red		    color9  #000000
+set_from_resource $darkgreen	color2  #000000
+set_from_resource $green	    color10 #000000
+set_from_resource $darkyellow	color3  #000000
+set_from_resource $yellow	    color11 #000000
+set_from_resource $darkblue	    color4  #000000
+set_from_resource $blue		    color12 #000000
+set_from_resource $darkmagenta	color5  #000000
+set_from_resource $magenta	    color13 #000000
+set_from_resource $darkcyan	    color6  #000000
+set_from_resource $cyan		    color14 #000000
+set_from_resource $darkwhite	color7  #000000
+set_from_resource $white	    color15 #000000
+set $transparent #00000000
+
+#                       BORDER		BACKGROUND	TEXT		INDICATOR   CHILD_BORDER
+client.focused		    $red		 $red		$magenta	$darkmagenta	$darkblue
+client.unfocused	    $transparent $blue		$white		$darkblue		$darkblack
+client.focused_inactive	$transparent $blue		$white		$darkblue		$darkblack
+client.urgent		    $darkred	 $darkred	$black		$darkred		$darkre
+client.background $black
+
+bar {
+	font pango:mono 10
+	colors {
+	    background $darkblack
+		statusline $darkwhite
+		separator $cyan
+		focused_workspace  $blue $darkblue $darkblack
+       	active_workspace   $blue $blue $darkwhite
+ 		inactive_workspace $darkblack $darkblack $white
+    	urgent_workspace   $darkblack $darkblack $white
+	}
+	status_command i3blocks
+	position top
+	mode dock
+	modifier None
+    tray_output             primary
+    workspace_buttons       yes
+    strip_workspace_numbers yes
+}
 
 # #---Basic Bindings---# #
 bindsym $mod+Return 		exec $term
@@ -61,17 +108,17 @@ bindsym $mod+Shift+r	exec $term -e sudo ranger /
 bindsym $mod+t			split toggle
 bindsym $mod+Shift+t	gaps inner current set 15; gaps outer current set 15
 
-bindsym $mod+y
-bindsym $mod+Shift+y	resize shrink width 10 px or 10ppt
+##bindsym $mod+y
+#bindsym $mod+Shift+y	resize shrink width 10 px or 10ppt
 
 ##bindsym $mod+u
-bindsym $mod+Shift+u	resize shrink height 10 px or 10 ppt
+#bindsym $mod+Shift+u	resize shrink height 10 px or 10 ppt
 
 bindsym $mod+i 			exec $term -e htop
-bindsym $mod+Shift+i	resize grow height 10 px or 10 ppt
+#bindsym $mod+Shift+i	resize grow height 10 px or 10 ppt
 
 bindsym $mod+o			sticky toggle
-bindsym $mod+Shift+o	resize grow width 10 px or 10 ppt
+#bindsym $mod+Shift+o	resize grow width 10 px or 10 ppt
 
 bindsym $mod+s			gaps inner current plus 5
 bindsym $mod+Shift+s	gaps inner current minus 5
@@ -100,7 +147,7 @@ bindsym $mod+Shift+l	move right 30
 bindsym $mod+z			gaps outer current plus 5
 bindsym $mod+Shift+z	gaps outer current minus 5
 
-bindsym $mod+x			exec --no-startup-id ~/.config/i3/scripts/lock/lock.sh
+bindsym $mod+x			exec --no-startup-id ~/.scripts/lock/lock.sh
 bindsym $mod+Shift+x	exec prompt "Are you sure you want to shutdown?" "$shutdown"
 
 ##bindsym $mod+c

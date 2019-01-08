@@ -11,7 +11,8 @@ conf_f["vim"]="vimrc"
 conf_f["tmux"]="tmux.conf"
 
 conf_d["i3"]=".config/i3"
-conf_d["polybar"]=".config/i3/polybar"
+conf_d["i3blocks"]=".config/i3blocks"
+#conf_d["polybar"]=".config/polybar"
 
 function make_links() {
     echo "Linking #########################"
@@ -37,8 +38,8 @@ function make_links() {
         which ${c} > /dev/null
         rc=$?
         if [[ ${rc} -eq 0 ]]; then
-            echo "${c} === Installed"
             CFG_PATH="$HOME/${conf_d[$c]}"
+            echo "======= ${CFG_PATH} ============"
             if [[ -d ${CFG_PATH} ]]; then
                 echo "${CFG_PATH} -- Dir removed!"
                 rm -Rf ${CFG_PATH}

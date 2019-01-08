@@ -1,0 +1,15 @@
+#!/bin/sh
+
+ru=🇷🇺
+us=🇺🇸
+
+layout=$(setxkbmap -query | grep layout | awk '{print $2}')
+
+if [[ $layout == 'us' ]]
+then
+    icon=$us
+else
+    icon=$ru
+fi
+echo "$icon"
+
