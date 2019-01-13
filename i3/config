@@ -1,21 +1,19 @@
 # #---Basic Definitions---# #
-
-#xrandr tune
-#exec --no-startup-id xrandr --output HDMI-1 --left-of DVI-D-1
-
 #Needed for i3-gaps
 for_window [class="^.*"] border pixel 3
 gaps inner 15
 gaps outer 15
+# hide_edge_borders vertical
 font pango:Source Sans Pro 10
 set $mod Mod4
 set $term --no-startup-id st
+set $browser "firefox"
 
 # #---Starting External Scripts---# #
 #Starts dunst for notifications:
 exec --no-startup-id dunst
 #Composite manager:
-exec --no-startup-id compton --xrender-sync-fence
+exec --no-startup-id compton --backend glx --vsync opengl --config ~/.config/compton.conf
 #Runs the key remapping scripts
 exec --no-startup-id  ~/.scripts/remaps
 #Unclutter makes the mouse invisible after a brief period
@@ -26,10 +24,8 @@ exec --no-startup-id  ~/.scripts/setbgw
 #SYSTEMD
 set $shutdown sudo shutdown -h now
 set $reboot sudo reboot
-set $netrefresh --no-startup-id sudo systemctl restart NetworkManager
-set $hibernate sudo systemctl suspend
 
-
+# Colors ===================================================================
 # Set Xresources colors:
 set_from_resource $darkblack	color0  #000000
 set_from_resource $black	    color8  #000000
@@ -56,26 +52,23 @@ client.focused_inactive	$transparent $blue		$white		$darkblue		$darkblack
 client.urgent		    $darkred	 $darkred	$black		$darkred		$darkre
 client.background $black
 
+# Bars =======================================================================
+# Top bar =======================
 bar {
-	font pango:mono 10
-	colors {
-	    background $darkblack
-		statusline $darkwhite
-		separator $cyan
-		focused_workspace  $blue $darkblue $darkblack
-       	active_workspace   $blue $blue $darkwhite
- 		inactive_workspace $darkblack $darkblack $white
-    	urgent_workspace   $darkblack $darkblack $white
-	}
-	status_command i3blocks
-	position top
-	mode dock
-	modifier None
-    tray_output             primary
-    workspace_buttons       yes
-    strip_workspace_numbers yes
+    font pango:mono 10
+    status_command ~/.bumblebee-status/bumblebee-status -m pacman datetime nic layout -t gruvbox-powerline
+    position top
+    mode dock
+    tray_output primary
+}
+# Bottom bar ===================
+bar {
+    font pango:mono 10
+    status_command ~/.bumblebee-status/bumblebee-status -m title cpu memory disk traffic weather -t gruvbox-powerline
+    workspace_buttons no
 }
 
+# Bindings ===================================================================
 # #---Basic Bindings---# #
 bindsym $mod+Return 		exec $term
 
@@ -100,7 +93,7 @@ bindsym $mod+q			kill
 bindsym $mod+Shift+q	kill
 
 ##bindsym $mod+w
-bindsym $mod+Shift+w	exec --no-startup-id $BROWSER
+bindsym $mod+Shift+w	exec --no-startup-id $browser
 
 bindsym $mod+r 			exec $term -e ranger
 bindsym $mod+Shift+r	exec $term -e sudo ranger /
@@ -109,21 +102,21 @@ bindsym $mod+t			split toggle
 bindsym $mod+Shift+t	gaps inner current set 15; gaps outer current set 15
 
 ##bindsym $mod+y
-#bindsym $mod+Shift+y	resize shrink width 10 px or 10ppt
+bindsym $mod+Shift+y    exec --no-startup-id i3resize left	
 
 ##bindsym $mod+u
-#bindsym $mod+Shift+u	resize shrink height 10 px or 10 ppt
+bindsym $mod+Shift+u    exec --no-startup-id i3resize down
 
 bindsym $mod+i 			exec $term -e htop
-#bindsym $mod+Shift+i	resize grow height 10 px or 10 ppt
+bindsym $mod+Shift+i	exec --no-startup-id i3resize up
 
 bindsym $mod+o			sticky toggle
-#bindsym $mod+Shift+o	resize grow width 10 px or 10 ppt
+bindsym $mod+Shift+o	exec --no-startup-id i3resize left
 
 bindsym $mod+s			gaps inner current plus 5
 bindsym $mod+Shift+s	gaps inner current minus 5
 
-bindsym $mod+d			exec --no-startup-id "rofi -combi-modi drun,run -show combi -modi combi"
+bindsym $mod+d			exec rofi -show run -lines 3 -eh 2 -bw 0 -width 100 -padding 400 -fullscreen
 bindsym $mod+Shift+d	gaps inner current set 0; gaps outer current set 0
 
 bindsym $mod+f			fullscreen toggle
