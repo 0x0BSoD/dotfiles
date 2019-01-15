@@ -61,6 +61,10 @@ filetype plugin indent on
     set relativenumber
     set wildmenu
     set wildmode=list:longest,full
+
+    " Autocomplete
+    set omnifunc=syntaxcomplete#Complete
+    set completeopt+=menuone,noselect,noinsert
     
     " For search
     set incsearch
@@ -123,6 +127,14 @@ filetype plugin indent on
 """""""""""""""""""""""""
 " Custom func
 """""""""""""""""""""""""
+	function! OpenCompletion()
+	    if !pumvisible() && ((v:char >= 'a' && v:char <= 'z') || (v:char >= 'A' && v:char <= 'Z'))
+	        call feedkeys("\<C-x>\<C-o>", "n")
+	    endif
+	endfunction
+
+	autocmd InsertCharPre * call OpenCompletion()
+
     fun! CleanExtraSpaces()
         let save_cursor = getpos(".")
         let old_query = getreg('/')
