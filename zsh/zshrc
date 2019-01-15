@@ -22,6 +22,7 @@ plugins=(
   git
   zsh-syntax-highlighting
   zsh-autosuggestions
+  fzf
   )
 source $ZSH/oh-my-zsh.sh
 source $ZSHCUSTOM/scripts/iterm2.zsh
@@ -86,3 +87,4 @@ eval $(thefuck --alias)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # vim: filetype=zshrc
+
