@@ -21,11 +21,14 @@ Plugin 'VundleVim/Vundle.vim'
     Plugin 'jistr/vim-nerdtree-tabs'
     Plugin 'Raimondi/delimitMate'
     Plugin 'christoomey/vim-tmux-navigator'
+    Plugin 'digitaltoad/vim-pug.git'
+    Plugin 'Yggdroot/indentLine'
 
 " Syntax
     Plugin 'vim-syntastic/syntastic'
     Plugin 'ekalinin/Dockerfile.vim'
     Plugin 'PotatoesMaster/i3-vim-syntax'
+    Plugin 'pangloss/vim-javascript'
 " Git
     Plugin 'airblade/vim-gitgutter'
     Plugin 'tpope/vim-fugitive'
@@ -150,13 +153,6 @@ filetype plugin indent on
 """""""""""""""""""""""""
 " Custom func
 """""""""""""""""""""""""
-	function! OpenCompletion()
-	    if !pumvisible() && ((v:char >= 'a' && v:char <= 'z') || (v:char >= 'A' && v:char <= 'Z'))
-	        call feedkeys("\<C-x>\<C-o>", "n")
-	    endif
-	endfunction
-
-	autocmd InsertCharPre * call OpenCompletion()
 
     fun! CleanExtraSpaces()
         let save_cursor = getpos(".")

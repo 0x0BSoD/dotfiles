@@ -7,8 +7,8 @@
 #################
 # golang env vars
 #################
-export GOPATH=$HOME/go
-export GOROOT=/usr/local/go
+export GOPATH=$HOME/Documents/Projects/go
+# export GOROOT=/usr/local/go
 export PATH=$PATH:$GOROOT/bin
 
 ############
