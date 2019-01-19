@@ -1,4 +1,4 @@
-# Linux dotfiles
+# Nix dotfiles
 
 ![screen](screen.png)
 
