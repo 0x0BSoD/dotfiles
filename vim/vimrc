@@ -34,14 +34,13 @@ call vundle#end()
 
 filetype plugin indent on
 
-
 """""""""""""""""""""""""""
 " Configuration Section
 """""""""""""""""""""""""""
 " Basic config
     syntax on
     hi clear SignColumn
-    
+
     " on all features
     set nocompatible
 
@@ -50,7 +49,7 @@ filetype plugin indent on
 
     " backspace as bacspace (:
     set backspace=indent,eol,start
-    
+
     set ruler
     set number
     set cursorline
@@ -65,11 +64,11 @@ filetype plugin indent on
     " Autocomplete
     set omnifunc=syntaxcomplete#Complete
     set completeopt+=menuone,noselect,noinsert
-    
+
     " For search
     set incsearch
     set hlsearch
-    
+
     " tabs
     set tabstop=4
     set shiftwidth=4
@@ -78,19 +77,26 @@ filetype plugin indent on
 
     " mouse as visual mode selector
     set mouse=a
-    
+
     " always show status bar
     set laststatus=2
     set background=dark
+    set noshowmode
+
+    " if terminal support 256 colors
+    set t_Co=256
 
 """""""""""""""""""""""""""
-" Plugins configure 
+" Plugins configure
 """""""""""""""""""""""""""
     """ airline
     let g:airline_detect_paste=1
     let g:airline_powerline_fonts=0
     let g:airline#extensions#tabline#enabled=1
-    
+    let g:rehash256 = 1
+    let g:airline_powerline_fonts = 1
+    let g:airline_theme='powerlineish'
+
     """ NERDTree
     nmap <silent> <leader>t :NERDTreeTabsToggle<CR>
     " let g:nerdtree_tabs_open_on_console_startup = 1
@@ -120,9 +126,26 @@ filetype plugin indent on
 " Mappings configurationn
 """""""""""""""""""""""""
 
-" Paste mode
+    """ Paste mode
     set pastetoggle=<F3>
 
+    """ Remap ESC to ii
+    :imap ii <Esc>
+
+    """ Disable arrow keys in Normal mode
+    no <Up> <Nop>
+    no <Down> <Nop>
+    no <Left> <Nop>
+    no <Right> <Nop>
+
+    """ Disable arrow keys in Insert mode
+    ino <Up> <Nop>
+    ino <Down> <Nop>
+    ino <Left> <Nop>
+    ino <Right> <Nop>
+
+    """ Reformat file
+    " map <F7> mzgg=G`zh
 
 """""""""""""""""""""""""
 " Custom func
@@ -146,20 +169,20 @@ filetype plugin indent on
     function! VisualSelection(direction, extra_filter) range
         let l:saved_reg = @"
         execute "normal! vgvy"
-    
+
         let l:pattern = escape(@", "\\/.*'$^~[]")
         let l:pattern = substitute(l:pattern, "\n$", "", "")
-    
+
         if a:direction == 'gv'
             call CmdLine("Ack '" . l:pattern . "' " )
         elseif a:direction == 'replace'
             call CmdLine("%s" . '/'. l:pattern . '/')
         endif
-    
+
         let @/ = l:pattern
         let @" = l:saved_reg
     endfunction
 
     if has("autocmd")
-        autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()   
+        autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
     endif
