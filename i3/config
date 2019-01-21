@@ -55,16 +55,29 @@ client.background $black
 # Bars =======================================================================
 # Top bar =======================
 bar {
-    font pango:mono 10
-    status_command ~/.bumblebee-status/bumblebee-status -m pacman datetime nic layout -t gruvbox-powerline
-    position top
-    mode dock
-    tray_output primary
+	font pango:mono 11
+	colors {
+	    background $darkblack
+		statusline $darkwhite
+		separator $cyan
+		focused_workspace  $blue $darkblue $darkblack
+       	active_workspace   $blue $blue $darkwhite
+ 		inactive_workspace $darkblack $darkblack $white
+    	urgent_workspace   $darkblack $darkblack $white
+	}
+	status_command 2>/tmp/i3blocks.err i3blocks -vvv | tee /tmp/i3blocks.out
+	position top
+    separator_symbol "." 
+	mode dock
+	modifier None
+    tray_output             primary
+    workspace_buttons       yes
+    strip_workspace_numbers yes
 }
 # Bottom bar ===================
 bar {
-    font pango:mono 10
-    status_command ~/.bumblebee-status/bumblebee-status -m title cpu memory disk traffic weather -t gruvbox-powerline
+    font pango:mono 11
+    status_command ~/.bumblebee-status/bumblebee-status -m title cpu memory disk traffic weather -t solarized-powerline
     workspace_buttons no
 }
 

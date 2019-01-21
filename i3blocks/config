@@ -1,23 +1,57 @@
 command=~/.config/i3blocks/$BLOCK_NAME
-separator_block_width=15
+separator=false
+separator_block_width=0
 markup=pango
-color=#f3f4f5
+
+[arrow]
+interval=once
+color=#002B36
 
 [pacpackages]
 label=📦
 interval=once
 signal=8
+background=#002B36
+color=#FFFFFF
+
+[arrow]
+interval=once
+color=#586E75
+background=#002B36
 
 [volume]
 interval=once
 signal=10
+color=#FFFFFF
+background=#586E75
+
+[arrow]
+interval=once
+color=#002B36
+background=#586E75
 
 [clock]
 label=📅
 interval=30
+background=#002B36
+color=#FFFFFF
+
+[arrow]
+interval=once
+color=#586E75
+background=#002B36
 
 [internet]
 interval=10
+color=#FFFFFF
+background=#586E75
+
+[arrow]
+interval=once
+color=#002B36
+background=#586E75
 
 [layout]
 interval=1
+background=#002B36
+color=#FFFFFF
