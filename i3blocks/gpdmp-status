@@ -1,0 +1,19 @@
+#!/bin/env python
+import os
+from json import dumps, loads
+
+def main():
+    out = ""
+    os.chdir("/home/asimonov/.config/Google Play Music Desktop Player/json_store/")
+    f = open("playback.json", "r")
+    json_f = loads(f.read())
+    song = f"{json_f['song']['title']} | {json_f['song']['artist']}"
+    if json_f["playing"] == False:
+        out += "⏸"
+    else:
+        out += "▶"
+    print(f"{out} {song}")
+
+if __name__ == "__main__":
+    main()
+
