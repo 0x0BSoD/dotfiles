@@ -21,10 +21,12 @@ Plugin 'VundleVim/Vundle.vim'
     Plugin 'jistr/vim-nerdtree-tabs'
     Plugin 'Raimondi/delimitMate'
     Plugin 'christoomey/vim-tmux-navigator'
+    Plugin 'Yggdroot/indentLine'
 
 " Syntax
     Plugin 'vim-syntastic/syntastic'
     Plugin 'ekalinin/Dockerfile.vim'
+    Plugin 'pearofducks/ansible-vim'
     Plugin 'PotatoesMaster/i3-vim-syntax'
 " Git
     Plugin 'airblade/vim-gitgutter'
@@ -122,6 +124,9 @@ filetype plugin indent on
         au FileType python let b:delimitMate_nesting_quotes = ['"', "'"]
     augroup END
 
+    """ ansible-vim
+    " au BufRead,BufNewFile */playbooks/*.yml set filetype=yaml.ansible
+
 """""""""""""""""""""""""
 " Mappings configurationn
 """""""""""""""""""""""""
@@ -150,13 +155,6 @@ filetype plugin indent on
 """""""""""""""""""""""""
 " Custom func
 """""""""""""""""""""""""
-	function! OpenCompletion()
-	    if !pumvisible() && ((v:char >= 'a' && v:char <= 'z') || (v:char >= 'A' && v:char <= 'Z'))
-	        call feedkeys("\<C-x>\<C-o>", "n")
-	    endif
-	endfunction
-
-	autocmd InsertCharPre * call OpenCompletion()
 
     fun! CleanExtraSpaces()
         let save_cursor = getpos(".")

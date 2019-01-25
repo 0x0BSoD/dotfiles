@@ -55,6 +55,7 @@ client.background $black
 # Bars =======================================================================
 # Top bar =======================
 bar {
+    output HDMI-2
 	font pango:mono 11
 	colors {
 	    background $darkblack
@@ -74,10 +75,19 @@ bar {
     workspace_buttons       yes
     strip_workspace_numbers yes
 }
+bar {
+    output HDMI-1
+	position top
+	mode dock
+	modifier None
+    workspace_buttons       yes
+    strip_workspace_numbers yes
+}
 # Bottom bar ===================
 bar {
+    output HDMI-2
     font pango:mono 11
-    status_command ~/.bumblebee-status/bumblebee-status -m title cpu memory disk traffic weather -t solarized-powerline
+    status_command ~/.bumblebee-status/bumblebee-status -m title git sensors memory disk weather -t solarized-powerline
     workspace_buttons no
 }
 
@@ -124,7 +134,7 @@ bindsym $mod+i 			exec $term -e htop
 bindsym $mod+Shift+i	exec --no-startup-id i3resize up
 
 bindsym $mod+o			sticky toggle
-bindsym $mod+Shift+o	exec --no-startup-id i3resize left
+bindsym $mod+Shift+o	exec --no-startup-id i3resize right
 
 bindsym $mod+s			gaps inner current plus 5
 bindsym $mod+Shift+s	gaps inner current minus 5

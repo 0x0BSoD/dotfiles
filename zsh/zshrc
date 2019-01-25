@@ -7,9 +7,9 @@
 #################
 # golang env vars
 #################
-export GOPATH=$HOME/go
-export GOROOT=/usr/local/go
-export PATH=$PATH:$GOROOT/bin
+export GOPATH=$HOME/Project/go
+#export PATH=$PATH:$GOROOT/bin
+xrandr --output HDMI-2 --left-of HDMI-1
 
 ############
 # oh-my-zsh

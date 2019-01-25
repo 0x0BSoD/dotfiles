@@ -5,7 +5,17 @@ markup=pango
 
 [arrow]
 interval=once
+color=#586E75
+
+[gpdmp-status]
+interval=1
+color=#FFFFFF
+background=#586E75
+
+[arrow]
+interval=once
 color=#002B36
+background=#586E75
 
 [pacpackages]
 label=📦
