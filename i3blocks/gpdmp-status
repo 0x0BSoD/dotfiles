@@ -3,12 +3,26 @@ import os
 import sys
 from json import dumps, loads
 
+
+def hum_sec(mseconds):
+    s = (mseconds/1000)%60
+    m =(mseconds/(1000*60))%60
+    return "%02d:%02d" % (m, s)
+
 def main():
     out = ""
-    os.chdir("/home/asimonov/.config/Google Play Music Desktop Player/json_store/")
-    f = open("playback.json", "r")
-    json_f = loads(f.read())
+    try:
+        os.chdir("/home/asimonov/.config/Google Play Music Desktop Player/json_store/")
+        f = open("playback.json", "r")
+        json_f = loads(f.read())
+    except:
+        print("⏹ no GPDMP")
+        sys.exit()
+
     song = f"{json_f['song']['title']} | {json_f['song']['artist']}"
+    time_s_current = json_f['time']['current']
+    time_s_total = json_f['time']['total']
+    time = f"{hum_sec(time_s_current)}/{hum_sec(time_s_total)}"
     if not json_f["song"]["title"]:
         print("⏹ no GPDMP")
         sys.exit()
@@ -16,7 +30,7 @@ def main():
         out += "⏸"
     else:
         out += "▶"
-    print(f"{out} {song}")
+    print(f"{out} {song} {time}")
 
 if __name__ == "__main__":
     main()

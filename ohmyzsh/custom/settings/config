@@ -1,24 +1,16 @@
 export ZSH_THEME="bsod"
 export MAILNAME="asimonov0x7C5"
-export EDITOR=atom
-export TERMINAL="iterm2"
+export EDITOR=vim
+export TERMINAL="st"
 export BROWSER="firefox"
 # export BLOCKSIZE=Mb
 export KEYTIMEOUT=1
-export MAIN_HD='/dev/disk1s1'
 
 export HISTSIZE=100000
 export SAVEHIST=100000
 export HISTFILESIZE=100000
 export HISTCONTROL=ignoredups:erasedups
-export CC=/usr/bin/gcc-4.2
-export CC=/usr/local/bin/gcc-4.2
 export HISTIGNORE="&:[ ]*:exit"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/git/bin:/Applications/Postgres.app/Contents/Versions/9.6/bin/
-export HOMEBREW_CASK_OPTS="--appdir=/Applications --caskroom=/opt/casks"
-export HOMEBREW_BUILD_FROM_SOURCE=1
-export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_NO_EMOJI=1
-export HOMEBREW_NO_ANALYTICS=1
+#export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/git/bin:/Applications/Postgres.app/Contents/Versions/9.6/bin/
