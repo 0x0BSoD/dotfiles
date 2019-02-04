@@ -29,11 +29,15 @@ Plugin 'VundleVim/Vundle.vim'
     Plugin 'pearofducks/ansible-vim'
     Plugin 'PotatoesMaster/i3-vim-syntax'
 	Plugin 'vim-scripts/indentpython.vim'
-    Bundle 'Valloric/YouCompleteMe'
     Plugin 'nvie/vim-flake8'
 " Git
     Plugin 'airblade/vim-gitgutter'
     Plugin 'tpope/vim-fugitive'
+" Python 
+    Plugin 'klen/python-mode'            
+    Plugin 'davidhalter/jedi-vim'       
+    Plugin 'mitsuhiko/vim-jinja'    
+    Plugin 'mitsuhiko/vim-python-combined' 
 
 call vundle#end()
 
@@ -52,8 +56,15 @@ filetype plugin indent on
     " global clipboard
     set clipboard=unnamed,unnamedplus
 
+    tab sball
+    set switchbuf=useopen
+
     " backspace as bacspace (:
     set backspace=indent,eol,start
+
+    aunmenu Help.
+    aunmenu Window.
+    let no_buffers_menu=1
 
     set ruler
     set number
@@ -63,11 +74,14 @@ filetype plugin indent on
     set magic
     set showmatch
     set relativenumber
+    set gcr=a:blinkon0
+    set ttyfast
     set wildmenu
     set wildmode=list:longest,full
 
     " Autocomplete
     set omnifunc=syntaxcomplete#Complete
+    set completeopt-=preview
     set completeopt+=menuone,noselect,noinsert
 
     " For search
@@ -82,6 +96,7 @@ filetype plugin indent on
 
     " mouse as visual mode selector
     set mouse=a
+    set mousemodel=popup
 
     " always show status bar
     set laststatus=2
@@ -90,6 +105,10 @@ filetype plugin indent on
 
     " if terminal support 256 colors
     set t_Co=256
+
+    set nobackup         " no backup files
+    set nowritebackup    " only in case you don't want a backup file while editing
+    set noswapfile       " no swap files"
 
 " File type specific
     let python_highlight_all=1
@@ -143,9 +162,33 @@ filetype plugin indent on
     """ ansible-vim
     au BufRead,BufNewFile */playbooks/*.yml set filetype=yaml.ansible
 
-    """ YouCompleteMe
-    let g:ycm_autoclose_preview_window_after_completion=1
-    map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+    " Python-mode settings
+    let g:pymode_rope = 0
+    let g:pymode_rope_completion = 0
+    let g:pymode_rope_complete_on_dot = 0
+    
+    let g:pymode_doc = 0
+    let g:pymode_doc_key = 'K'
+    let g:pymode_lint = 1
+    let g:pymode_lint_checker = "pyflakes,pep8"
+    let g:pymode_lint_ignore="E501,W601,C0110"
+    let g:pymode_lint_write = 1
+    
+    let g:pymode_virtualenv = 1
+    
+    let g:pymode_breakpoint = 1
+    let g:pymode_breakpoint_key = '<leader>b'
+    
+    let g:pymode_syntax = 1
+    let g:pymode_syntax_all = 1
+    let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+    let g:pymode_syntax_space_errors = g:pymode_syntax_all
+    
+    let g:pymode_folding = 0
+    
+    let g:pymode_run = 0
+    
+    let g:jedi#popup_select_first = 0
 
 """""""""""""""""""""""""
 " Mappings configurationn
@@ -175,6 +218,12 @@ filetype plugin indent on
 """""""""""""""""""""""""
 " Custom func
 """""""""""""""""""""""""
+	augroup vimrc_autocmds
+	    autocmd!
+	    autocmd FileType ruby,python,javascript,c,cpp highlight Excess ctermbg=DarkGrey guibg=Black
+	    autocmd FileType ruby,python,javascript,c,cpp match Excess /\%80v.*/
+	    autocmd FileType ruby,python,javascript,c,cpp set nowrap
+	augroup END
 
     fun! CleanExtraSpaces()
         let save_cursor = getpos(".")
@@ -204,7 +253,4 @@ filetype plugin indent on
     if has("autocmd")
         autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
     endif
-
-    """ Show whitespaces
-    " au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 

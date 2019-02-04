@@ -58,6 +58,7 @@ fi
 alias cp='nocorrect cp -i'
 alias mv='nocorrect mv -i'
 alias rm='nocorrect rm -i'
+alias rma='nocorrect rm -Rfi'
 
 alias rehash="hash -r"
 
@@ -76,15 +77,12 @@ alias gpu='git pull'
 alias gcl='git clone'
 alias gta='git tag -a -m'
 alias gf='git reflog'
-
+alias pupdate='sudo pacman -Syu && ~/.scripts/checkupdpkg'
 alias cdf='cd `osascript -e "tell application \"Finder\" to if window 1 exists then if target of window 1 as string is not \":\" then get POSIX path of (target of window 1 as alias)"`'
-
 
 autoload -U compinit && compinit
 
 eval $(thefuck --alias)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# vim: filetype=zshrc
 
