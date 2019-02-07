@@ -28,16 +28,18 @@ Plugin 'VundleVim/Vundle.vim'
     Plugin 'ekalinin/Dockerfile.vim'
     Plugin 'pearofducks/ansible-vim'
     Plugin 'PotatoesMaster/i3-vim-syntax'
-	Plugin 'vim-scripts/indentpython.vim'
+    Plugin 'vim-scripts/indentpython.vim'
     Plugin 'nvie/vim-flake8'
+    Plugin 'rodjek/vim-puppet'
 " Git
     Plugin 'airblade/vim-gitgutter'
     Plugin 'tpope/vim-fugitive'
-" Python 
-    Plugin 'klen/python-mode'            
-    Plugin 'davidhalter/jedi-vim'       
-    Plugin 'mitsuhiko/vim-jinja'    
-    Plugin 'mitsuhiko/vim-python-combined' 
+
+" Python
+    Plugin 'klen/python-mode'
+    Plugin 'davidhalter/jedi-vim'
+    Plugin 'mitsuhiko/vim-jinja'
+    Plugin 'mitsuhiko/vim-python-combined'
 
 call vundle#end()
 
@@ -54,7 +56,7 @@ filetype plugin indent on
     set nocompatible
 
     " global clipboard
-    set clipboard=unnamed,unnamedplus
+    set clipboard=unnamedplus
 
     tab sball
     set switchbuf=useopen
@@ -68,7 +70,7 @@ filetype plugin indent on
 
     set ruler
     set number
-    set cursorline
+    "set cursorline
     set showcmd
     set nowrap
     set magic
@@ -112,16 +114,6 @@ filetype plugin indent on
 
 " File type specific
     let python_highlight_all=1
-    " Python
-    "au BufNewFile,BufRead *.py
-    "    \ set tabstop=4
-    "    \ set softtabstop=4
-    "    \ set shiftwidth=4
-    "    \ set textwidth=79
-    "    \ set expandtab
-    "    \ set autoindent
-    "    \ set fileformat=unix
-
 
 """""""""""""""""""""""""""
 " Plugins configure
@@ -162,33 +154,36 @@ filetype plugin indent on
     """ ansible-vim
     au BufRead,BufNewFile */playbooks/*.yml set filetype=yaml.ansible
 
-    " Python-mode settings
+    """ Python-mode settings
     let g:pymode_rope = 0
     let g:pymode_rope_completion = 0
     let g:pymode_rope_complete_on_dot = 0
-    
     let g:pymode_doc = 0
     let g:pymode_doc_key = 'K'
     let g:pymode_lint = 1
     let g:pymode_lint_checker = "pyflakes,pep8"
     let g:pymode_lint_ignore="E501,W601,C0110"
     let g:pymode_lint_write = 1
-    
+
     let g:pymode_virtualenv = 1
-    
+
     let g:pymode_breakpoint = 1
     let g:pymode_breakpoint_key = '<leader>b'
-    
+
     let g:pymode_syntax = 1
     let g:pymode_syntax_all = 1
     let g:pymode_syntax_indent_errors = g:pymode_syntax_all
     let g:pymode_syntax_space_errors = g:pymode_syntax_all
-    
+
     let g:pymode_folding = 0
-    
+
     let g:pymode_run = 0
-    
+
     let g:jedi#popup_select_first = 0
+
+    """ IndentLine
+    let g:indentLine_leadingSpaceEnabled = 1
+    let g:indentLine_leadingSpaceChar = '˽'
 
 """""""""""""""""""""""""
 " Mappings configurationn
@@ -212,18 +207,27 @@ filetype plugin indent on
     ino <Left> <Nop>
     ino <Right> <Nop>
 
-    """ Reformat file
-    " map <F7> mzgg=G`zh
+    """ Splits
+    :map <C-a> :vsplit <cr>
+    :map <C-s> :split  <cr>
+    :map <Up>   :resize -5 <cr>
+    :map <Down> :resize +5 <cr>
+    :map <Left>  :vertical resize -5 <cr>
+    :map <Right> :vertical resize +5 <cr>
+
+    """ Navigate thrue wrapped lines
+    :nnoremap k gk
+    :nnoremap j gj
 
 """""""""""""""""""""""""
 " Custom func
 """""""""""""""""""""""""
-	augroup vimrc_autocmds
-	    autocmd!
-	    autocmd FileType ruby,python,javascript,c,cpp highlight Excess ctermbg=DarkGrey guibg=Black
-	    autocmd FileType ruby,python,javascript,c,cpp match Excess /\%80v.*/
-	    autocmd FileType ruby,python,javascript,c,cpp set nowrap
-	augroup END
+    augroup vimrc_autocmds
+        autocmd!
+        autocmd FileType ruby,python,javascript,c,cpp highlight Excess ctermbg=DarkGrey guibg=Black
+        autocmd FileType ruby,python,javascript,c,cpp match Excess /\%80v.*/
+        autocmd FileType ruby,python,javascript,c,cpp set nowrap
+    augroup END
 
     fun! CleanExtraSpaces()
         let save_cursor = getpos(".")

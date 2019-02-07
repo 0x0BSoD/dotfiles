@@ -27,6 +27,8 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 source $ZSHCUSTOM/scripts/iterm2.zsh
 
+# Unmap Ctrl-z
+stty stop undef
 
 if [ -f "$ZSH/custom/settings/intro" ]; then
   echo "${txtylw}"
@@ -37,23 +39,15 @@ fi
 ##########################################
 # ALIASES
 ##########################################
-unamestr=$(uname)
 alias zshconfig="$EDITOR ~/.zshrc"
 alias ohmyzsh="$EDITOR $ZSH"
 alias grep='nocorrect grep --color=auto --exclude="*.pyc" --exclude-dir=".svn" --exclude-dir=".hg" --exclude-dir=".bzr" --exclude-dir=".git"';
-if [[ $unamestr == "Darwin" ]]; then
-   alias ls='ls -FGh'
-   alias ll='ls -FGhl'
-   alias la='ls -FGhlA'
-   alias li='ls -FGhial'
-   alias lsa='ls -FGhld .*'
-else
-   alias ls='ls -Fh --color=auto'
-   alias ll='ls -Fhl --color=auto'
-   alias la='ls -FhlA --color=auto'
-   alias li='ls -Fhial --color=auto'
-   alias lsa='ls -Fhld --color=auto .*'
-fi
+
+alias ls='ls -Fh --color=auto'
+alias ll='ls -Fhl --color=auto'
+alias la='ls -FhlA --color=auto'
+alias li='ls -Fhial --color=auto'
+alias lsa='ls -Fhld --color=auto .*'
 
 alias cp='nocorrect cp -i'
 alias mv='nocorrect mv -i'
@@ -78,11 +72,14 @@ alias gcl='git clone'
 alias gta='git tag -a -m'
 alias gf='git reflog'
 alias pupdate='sudo pacman -Syu && ~/.scripts/checkupdpkg'
-alias cdf='cd `osascript -e "tell application \"Finder\" to if window 1 exists then if target of window 1 as string is not \":\" then get POSIX path of (target of window 1 as alias)"`'
 
 autoload -U compinit && compinit
 
 eval $(thefuck --alias)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+autoload bashcompinit
+bashcompinit
+[ -f ~/.bash_completion.d/python-argcomplete.sh ] && source ~/.bash_completion.d/python-argcomplete.sh
 
