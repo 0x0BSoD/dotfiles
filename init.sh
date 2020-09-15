@@ -4,70 +4,104 @@ ZSH=0
 
 pm=("apt-get" "pacman" "brew" "yum" "yast")
 declare -A conf_f
-declare -A conf_d
+# declare -a conf_d
 
 conf_f["zsh"]="zshrc"
 conf_f["vim"]="vimrc"
 conf_f["tmux"]="tmux.conf"
 
-conf_d["i3"]=".config/i3"
-conf_d["i3blocks"]=".config/i3blocks"
-#conf_d["polybar"]=".config/polybar"
-
 function make_links() {
-    echo "Linking #########################"
-     for c in "${!conf_f[@]}"; do
+    for c in "${!conf_f[@]}"; do
+        # echo "$c ==> ${conf_f[$c]}"
+        echo "=> Checking ${c}"
         which ${c} > /dev/null
         rc=$?
-        if [[ ${rc} -eq 0 ]]; then
-            CFG_PATH="$HOME/.${conf_f[$c]}"
-            echo "======= ${CFG_PATH} ============"
-            if [[ -f ${CFG_PATH} ]]; then
-                echo "${CFG_PATH} -- File removed!"
-                rm "${CFG_PATH}"
+        if [[ ! ${rc} -eq 0 ]]; then
+            command="${PM} ${c}"
+            echo "[x] run: ${command}"
+            ${command}
+        else
+            echo "[x] installed"
+        fi
+
+        echo "=> Linking ${conf_f[$c]}"
+        CFG_PATH="$HOME/.${conf_f[$c]}"
+        echo "config path is ${CFG_PATH}"
+        if [[ -f ${CFG_PATH} ]]; then
+            echo "${CFG_PATH} -- File removed!"
+            rm "${CFG_PATH}"
+        fi
+
+        if [[ $c == "vim" ]]; then
+            if [[ ! -d $HOME/.vim/bundle/Vundle.vim ]]; then 
+                echo "Install Vundle"
+                git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+                vim +PluginInstall +qall
             fi
-            if [[ -L ${CFG_PATH} ]]; then
-                echo "${CFG_PATH} -- Link removed!"
-                rm ${CFG_PATH}
+        fi
+        
+        if [[ $c == "zsh" ]]; then
+            if [[ ! -d $HOME/.oh-my-zsh ]]; then
+                sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
             fi
             ln -s "$PWD/${c}/${conf_f[$c]}" ${CFG_PATH}
-        fi
-     done
+            echo "link created"
+            echo ""
 
-     for c in "${!conf_d[@]}"; do
-        which ${c} > /dev/null
-        rc=$?
-        if [[ ${rc} -eq 0 ]]; then
-            CFG_PATH="$HOME/${conf_d[$c]}"
-            echo "======= ${CFG_PATH} ============"
-            if [[ -d ${CFG_PATH} ]]; then
-                echo "${CFG_PATH} -- Dir removed!"
-                rm -Rf ${CFG_PATH}
+            echo "Add custom dir link to oh-my-zsh"
+            if [[ -d $HOME/.oh-my-zsh/custom ]]; then
+                echo "$HOME/.oh-my-zsh/custom -- Dir removed!"
+                rm -Rf $HOME/.oh-my-zsh/custom
             fi
-            ln -s "$PWD/${c}" ${CFG_PATH}
+        
+            ln -s "$PWD/ohmyzsh/custom" "$HOME/.oh-my-zsh/custom"
+            echo "link created"
+
+            which fzf > /dev/null
+            rc=$?
+            if [[ ${rc} -eq 1 ]]; then
+                echo "fzf === Not Installed"
+                command="${PM} fzf"
+                echo "[x] run: ${command}"
+                ${command}
+            fi
+
+            which thefuck > /dev/null
+            rc=$?
+            if [[ ${rc} -eq 1 ]]; then
+                echo "thefuck === Not Installed"
+                command="${PM} thefuck"
+                echo "[x] run: ${command}"
+                ${command}
+            fi
+
+            if [[ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]]; then
+                echo "Install zsh-syntax-highlighting"
+                git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+            fi
+
+            if [[ ! -d $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]]; then
+                echo "Install zsh-autosuggestions"
+                git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+            fi
         fi
-     done
 
-     which zsh > /dev/null
-     rc=$?
-     if [[ ${rc} -eq 0 ]]; then
-         echo "Add customs to oh-my-zsh #########################"
-         if [[ -d $HOME/.oh-my-zsh/custom ]]; then
-             echo "$HOME/.oh-my-zsh/custom -- Dir removed!"
-             rm -Rf $HOME/.oh-my-zsh/custom
-         fi
-         ln -s "$PWD/ohmyzsh/custom" "$HOME/.oh-my-zsh/custom"
-     fi
-
-
+        echo -e "+================+\n"
+    done
 }
 
-echo "Package manager #########################"
- for c in ${pm[@]}; do
+
+echo "You bash version is $BASH_VERSION"
+echo "If it less than 4 install newer version of bash and restart script"
+echo "brew update && brew install bash"
+echo ""
+
+echo "=> Checking package manager"
+for c in ${pm[@]}; do
     which ${c} > /dev/null
     rc=$?
     if [[ ${rc} -eq 0 ]]; then
-        echo "[x] Is ${c}"
+        echo "[x] It's ${c}"
         if [[ $c != "pacman" ]]; then
             PM="${c} install"
         else
@@ -75,9 +109,10 @@ echo "Package manager #########################"
         fi
         break
     fi
- done
+done
+echo ""
 
-if $1 != "silent"
+if [[ $1 != "silent" ]]
 then
     which dialog > /dev/null
     rc=$?
@@ -87,7 +122,6 @@ then
         echo "[x] run: ${command}"
         ${command}
     fi
-
 
     dialog --title "Config pusher" --yesno "Your existing configs has be delited. Do you wish to begin?" 7 60
     response=$?
@@ -99,11 +133,3 @@ then
 else
    make_links
 fi
-
-#start_this
-#ln -s ./zshrc     ~/.zshrc
-#ln -s ./vimrc     ~/.vimrc
-#ln -s ./tmux.conf ~/.tmux.conf
-#ln -s ./i3/config ~/.config/i3/config
-#ln -s ./scripts   ~/.scripts
-#ln -s ./polybar   ~/.config/polybar
