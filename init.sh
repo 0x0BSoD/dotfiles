@@ -12,8 +12,7 @@ conf_f["tmux"]="tmux.conf"
 
 function make_links() {
     for c in "${!conf_f[@]}"; do
-        # echo "$c ==> ${conf_f[$c]}"
-        echo "=> Checking ${c}"
+        
         which ${c} > /dev/null
         rc=$?
         if [[ ! ${rc} -eq 0 ]]; then
@@ -32,6 +31,10 @@ function make_links() {
             rm "${CFG_PATH}"
         fi
 
+        ln -s "$PWD/${c}/${conf_f[$c]}" ${CFG_PATH}
+        echo "link created"
+
+        # additionall
         if [[ $c == "vim" ]]; then
             if [[ ! -d $HOME/.vim/bundle/Vundle.vim ]]; then 
                 echo "Install Vundle"
@@ -44,9 +47,6 @@ function make_links() {
             if [[ ! -d $HOME/.oh-my-zsh ]]; then
                 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
             fi
-            ln -s "$PWD/${c}/${conf_f[$c]}" ${CFG_PATH}
-            echo "link created"
-            echo ""
 
             echo "Add custom dir link to oh-my-zsh"
             if [[ -d $HOME/.oh-my-zsh/custom ]]; then
