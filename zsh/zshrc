@@ -7,9 +7,8 @@
 #################
 # golang env vars
 #################
-export GOPATH=$HOME/Project/go
-#export PATH=$PATH:$GOROOT/bin
-xrandr --output HDMI-2 --left-of HDMI-1
+export GOPATH=$HOME/Projects/go
+export PATH=$PATH:$GOROOT/bin
 
 ############
 # oh-my-zsh
@@ -29,12 +28,6 @@ source $ZSHCUSTOM/scripts/iterm2.zsh
 
 # Unmap Ctrl-z
 stty stop undef
-
-if [ -f "$ZSH/custom/settings/intro" ]; then
-  echo "${txtylw}"
-  cat $ZSHCUSTOM/settings/intro
-  echo "${txtrst}"
-fi
 
 ##########################################
 # ALIASES
@@ -73,7 +66,11 @@ alias gta='git tag -a -m'
 alias gf='git reflog'
 alias pupdate='sudo pacman -Syu && ~/.scripts/checkupdpkg'
 
+alias k='kubectl'
+
 autoload -U compinit && compinit
+source <(kubectl completion zsh)
+compdef __start_kubectl k
 
 eval $(thefuck --alias)
 
